@@ -1,0 +1,45 @@
+version: '3.9'
+services:
+  db:
+    image: postgres:15-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-perfumix}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-perfumix}
+      POSTGRES_DB: ${POSTGRES_DB:-perfumix}
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+
+  api:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    environment:
+      NODE_ENV: production
+      PORT: 4000
+      JWT_SECRET: ${JWT_SECRET:-dev_secret}
+      DB_URL: ${DB_URL:-postgresql://perfumix:perfumix@db:5432/perfumix}
+      PAYMENT_ENV: ${PAYMENT_ENV:-sandbox}
+      PAYMENT_PIX_KEY: ${PAYMENT_PIX_KEY:-}
+      PAYMENT_CARD_KEY: ${PAYMENT_CARD_KEY:-}
+      PAYMENT_BOLETO_KEY: ${PAYMENT_BOLETO_KEY:-}
+      MOCK_PAYMENT_REDIRECT: ${MOCK_PAYMENT_REDIRECT:-https://example.com/pagamento-simulado}
+    depends_on:
+      - db
+    ports:
+      - "4000:4000"
+
+  nginx:
+    image: nginx:alpine
+    depends_on:
+      - api
+    ports:
+      - "8080:80"
+    volumes:
+      - ./nginx.conf:/etc/nginx/conf.d/default.conf:ro
+
+volumes:
+  db_data:

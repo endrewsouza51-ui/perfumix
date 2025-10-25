@@ -1,0 +1,84 @@
+[build]
+  publish = "."
+
+[functions]
+  directory = "netlify/functions"
+
+[build.environment]
+  NODE_VERSION = "20"
+
+[[redirects]]
+  from = "/api/*"
+  to = "/.netlify/functions/api/:splat"
+  status = 200
+
+[[redirects]]
+  from = "/"
+  to = "/frontend/index.html"
+  status = 301
+
+[[redirects]]
+  from = "/store"
+  to = "/frontend/store.html"
+  status = 200
+
+[[redirects]]
+  from = "/product"
+  to = "/frontend/product.html"
+  status = 200
+
+[[redirects]]
+  from = "/cart"
+  to = "/frontend/cart.html"
+  status = 200
+
+[[redirects]]
+  from = "/checkout"
+  to = "/frontend/checkout.html"
+  status = 200
+
+[[redirects]]
+  from = "/account"
+  to = "/frontend/account.html"
+  status = 200
+
+[[redirects]]
+  from = "/faq"
+  to = "/frontend/faq.html"
+  status = 200
+
+[[redirects]]
+  from = "/privacy"
+  to = "/frontend/privacy.html"
+  status = 200
+
+[[redirects]]
+  from = "/terms"
+  to = "/frontend/terms.html"
+  status = 200
+
+# Admin routes
+[[redirects]]
+  from = "/admin"
+  to = "/admin/index.html"
+  status = 301
+
+[[redirects]]
+  from = "/admin/login"
+  to = "/admin/login.html"
+  status = 301
+
+[[redirects]]
+  from = "/admin/"
+  to = "/admin/index.html"
+  status = 301
+
+[[redirects]]
+  from = "/admin/login/"
+  to = "/admin/login.html"
+  status = 301
+
+[[redirects]]
+  from = "/admin/*/"
+  to = "/admin/:splat"
+  status = 200
